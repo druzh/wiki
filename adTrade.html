@@ -361,6 +361,12 @@ Error message and password prompt
 
 <li>Draft of 'Разворотные модели'</li>
 
+<li>Floating Images HowTo</li>
+
+<li>floating-image-css</li>
+
+<li>floating-image-macros</li>
+
 </ul>
 </p>
 
@@ -11591,7 +11597,9 @@ $:/config/ViewToolbarButtons/Visibility/$(listItem)$
 <div status="complete" title="$:/Import">
 <pre>The following tiddlers were imported:
 
-# [[Темные облака.png]]</pre>
+# [[floating-image-css]]
+# [[floating-image-macros]]
+# [[Floating Images HowTo]]</pre>
 </div>
 <div bag="default" revision="0" title="$:/isEncrypted">
 <pre>no</pre>
@@ -13442,7 +13450,7 @@ exports.context = contextWidget;
 <div bag="default" revision="1" title="$:/status/UserName">
 <pre></pre>
 </div>
-<div created="20210526200028829" list="[[Draft of 'Разворотные модели']] [[Трейдинг и инвестиции - база знаний]]" modified="20210526202238564" title="$:/StoryList">
+<div created="20210526200028829" list="$:/Import [[Draft of 'Разворотные модели']] [[Трейдинг и инвестиции - база знаний]]" modified="20210526202238564" title="$:/StoryList">
 <pre></pre>
 </div>
 <div created="20200519141000553" list="$:/.giffmex/Buttons/more-tiddler-edit-actions $:/core/ui/Buttons/delete $:/core/ui/Buttons/cancel $:/core/ui/Buttons/save" modified="20200521145647980" tags="$:/giffmex/bigeditarea $:/giffmex/stroll" title="$:/tags/EditToolbar">
@@ -13622,18 +13630,116 @@ Ratland.&quot;&quot;&quot;/&gt;
 
 [[Разворотные модели]]</pre>
 </div>
-<div created="20210526175522203" draft.of="Разворотные модели" draft.title="Разворотные модели" modified="20210526204230665" tags="[[Свечные модели]]" title="Draft of 'Разворотные модели'">
-<pre>&lt;table&gt;
+<div created="20210526175522203" draft.of="Разворотные модели" draft.title="Разворотные модели" modified="20210526204432245" tags="[[Свечные модели]]" title="Draft of 'Разворотные модели'">
+<pre>&lt;table class=&quot;noborders&quot;&gt;
 &lt;td&gt;
 Пронизывающая свеча
-&lt;td&gt;
+
 Темные облака 
 &lt;tr&gt;
 [img[Темные облака |Темные облака.png]] 
 &lt;td&gt;
 [img[Пронизывающая свеча|Пронизывающая свеча.png]]
 &lt;/td&gt;
-&lt;/tr&gt;</pre>
+&lt;/tr&gt;
+&lt;/table&gt;</pre>
+</div>
+<div created="20150320130409526" modified="20150320150528382" tags="floating-images" title="Floating Images HowTo">
+<pre>There is a wikitext syntax for images eg: `[img[Motovun Jack.jpg]]`. But what if I want to center the image. Or if I want the image left or right aligned and the text should flow around the image. 
+
+There are 3 macros now.
+
+* `&lt;&lt;image-left &quot;Motovun Jack.jpg&quot;&gt;&gt;`
+* `&lt;&lt;image-center &quot;Motovun Jack.jpg&quot;&gt;&gt;`
+* `&lt;&lt;image-right &quot;Motovun Jack.jpg&quot;&gt;&gt;`
+
+&lt;&lt;image-left &quot;Motovun Jack.jpg&quot; caption:&quot;//floating image//&quot;&gt;&gt;
+
+```
+&lt;&lt;image-left &quot;Motovun Jack.jpg&quot;&gt;&gt;
+```
+Activates a `float-left` CSS rule for the image container. 
+
+If you want to add a caption to the image, just use: 
+
+```
+&lt;&lt;image-left &quot;Motovun Jack.jpg&quot; caption:&quot;//floating image//&quot;&gt;&gt;
+```
+
+@@.image-text
+As you can see, inline formatting rules can be used. 
+@@
+
+The image below will be centred and slightly bigger. There is no text flow around the image. The macro is used like this:
+
+```
+&lt;&lt;image-center &quot;Motovun Jack.jpg&quot; caption:&quot;centered image&quot; width:&quot;50%&quot;&gt;&gt;
+```
+
+&lt;&lt;image-center &quot;Motovun Jack.jpg&quot; caption:&quot;centered image&quot; width:&quot;50%&quot;&gt;&gt;
+
+&lt;&lt;image-right &quot;Motovun Jack.jpg&quot; caption:&quot;''float right''&quot; tooltip:&quot;Motovun Jack - The TiddlyWiki Mascot&quot;&gt;&gt;
+
+This image uses:
+
+```
+&lt;&lt;image-right &quot;Motovun Jack.jpg&quot; caption:&quot;''float right''&quot; tooltip:&quot;Motovun Jack - The TiddlyWiki Mascot&quot;&gt;&gt;
+```
+
+@@.image-text
+Since &quot;float-left&quot; and &quot;float-right&quot; CSS rules have some effects on the text flow, we need a mechanism, that disables this effect. 
+So we need to assign a special class to the last paragraph of this page: eg: `@@.image-text ... @@`
+@@
+
+</pre>
+</div>
+<div created="20150320130633774" modified="20150320150525854" tags="$:/tags/Stylesheet floating-images" title="floating-image-css" type="text/plain">
+<pre>.image-float-right {
+    float: right;
+    text-align: center;
+    padding: 0.5em 0 1em 1em;
+}
+
+.image-float-left {
+    float: left;
+    text-align: center;
+    padding: 0.5em 1em 1em 0;
+}
+
+.image-center {
+    margin-left: auto;
+    margin-right: auto;
+    text-align:center;
+}
+
+.image-text:after,
+.clearfix:after {
+  content: &quot;&quot;;
+  display: table;
+  clear: both;
+}</pre>
+</div>
+<div created="20150320143808221" modified="20150320150522012" tags="$:/tags/Macro floating-images" title="floating-image-macros">
+<pre>\define image-left(name, width:&quot;33%&quot;, tooltip, caption)
+&lt;div class=&quot;image-float-left&quot; style=&quot;width:$width$&quot;&gt;
+[img width=&quot;100%&quot; [$tooltip$|$name$]]
+$caption$
+&lt;/div&gt;
+\end
+
+\define image-right(name, width:&quot;33%&quot;, tooltip, caption)
+&lt;div class=&quot;image-float-right&quot; style=&quot;width:$width$&quot;&gt;
+[img width=&quot;100%&quot; [$tooltip$|$name$]]
+$caption$
+&lt;/div&gt;
+\end
+
+\define image-center(name, width:&quot;33%&quot;, tooltip, caption)
+&lt;div class=&quot;image-center&quot; style=&quot;width:$width$&quot;&gt;
+[img width=&quot;100%&quot; [$tooltip$|$name$]]
+$caption$
+&lt;/div&gt;
+\end</pre>
 </div>
 
 
